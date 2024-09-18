@@ -1,0 +1,293 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Masters/Doctoral Thesis 
+% LaTeX Template
+% Version MBE (2022-10-27):
+% https://mbe.informatik.uni-siegen.de/
+%
+% This template was downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Version 2.x major modifications by:
+% Vel (vel@latextemplates.com)
+%
+% This template is based on a template by:
+% Steve Gunn (http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/)
+% Sunil Patel (http://www.sunilpatel.co.uk/thesis-template/)
+%
+% Template license:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+11pt, % The default document font size, options: 10pt, 11pt, 12pt
+%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+%toctotoc, % Uncomment to add the main table of contents to the table of contents
+%parskip, % Uncomment to add space between paragraphs
+%nohyperref, % Uncomment to not load the hyperref package
+headsepline, % Uncomment to get a line under the header
+%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
+%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+%anonymous, % MBE: Uncomment to compile a PDF without personal information, so it can be submitted to plagiarism detection tools
+]{MastersDoctoralThesis} % The class file specifying the document structure
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{mathpazo} % Use the Palatino font by default
+\usepackage{MnSymbol}
+
+
+\usepackage[backend=bibtex,style=numeric,natbib=true,maxbibnames=99]{biblatex}
+
+\addbibresource{main.bib} % The filename of the bibliography
+
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+
+
+
+%----------------------------------------------------------------------------------------
+%	MARGIN SETTINGS
+%----------------------------------------------------------------------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=2.5cm, % Inner margin
+	outer=3.8cm, % Outer margin
+	bindingoffset=.5cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%----------------------------------------------------------------------------------------
+%	THESIS INFORMATION
+%----------------------------------------------------------------------------------------
+
+\thesistitle{Deutscher Titel}{English Title} % Your thesis title in german and english, this is used in the title and abstract, print it elsewhere with \detitle and \entitle or \ttitle
+\author{Name \textsc{Nachname}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
+\university{Universität Siegen}{University of Siegen} % Your university's name, this is used in the title page and abstract, print it elsewhere with \deunivname and \enunivname or \univname
+\chair{Professur für Modellbasierte Entwicklung}{Chair of Model-based Engineering}
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	SELECT LANGUAGE
+%----------------------------------------------------------------------------------------
+
+\selectlanguage{ngerman} % english for English
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%----------------------------------------------------------------------------------------
+%	TITEL SEITE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+
+{\scshape\LARGE \univname\par}\vspace{1.5cm}
+
+\vspace*{.03\textheight}
+
+\IfLanguageName{ngerman}{\textsc{\Large Masterarbeit/Bachelorarbeit \\ im Fach Informatik}}{\textsc{\Large Master/Bachelor thesis \\ in the subject of computer science}}\\[0.4cm] % Thesis type
+
+
+
+\vspace*{.03\textheight}
+
+\HRule \\[0.4cm]
+{\huge \bfseries \ttitle\par}\vspace{0.5cm}
+\HRule \\[1.5cm]
+ 
+
+\IfLanguageName{ngerman}{vorgelegt von}{submitted by}
+
+\vspace*{.03\textheight}
+
+\textbf{\authorname}
+\end{center}
+
+\vspace*{.20\textheight}
+
+\IfLanguageName{ngerman}{\emph{Betreuer:}}{\emph{Supervisors:}}
+\vspace{0.5em}
+
+\ifbool{anonymous}{
+	\hspace{1em} Anonymous
+}{
+	% Erstbetreuer
+	\hspace{1em} Prof. Dr. M. \textsc{Lochau},\vskip0em
+	\hspace{2em}\chairname,\vskip0em
+	\hspace{2em}\univname
+
+	% Zweitbetreuer
+	%\vspace{0.5em}
+	%\hspace{1em} M. Sc. V. \textsc{Nachname},\vskip0em
+	%\hspace{2em}\chairname,\vskip0em
+	%\hspace{2em}\univname
+
+	\vfill
+
+	% Date
+\IfLanguageName{ngerman}{Beginn der Arbeit: }{Start of preparation: }01.01.1970 \vskip0em
+\IfLanguageName{ngerman}{Ende der Arbeit: }{Finalization: }01.01.2000
+}
+
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	EIDESSTATTLICHE ERKLÄRUNG
+%----------------------------------------------------------------------------------------
+
+\begin{declaration}
+\IfLanguageName{ngerman}{
+
+%German declaration
+
+\noindent Ich versichere nach § 39 (1) der Einheitlichen Regelungen, meine Arbeit (bei einer
+Gruppenarbeit meinen entsprechend gekennzeichneten Anteil der Arbeit) selbständig
+verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt
+sowie Zitate kenntlich gemacht zu haben. \\
+
+\vspace{1cm}
+\noindent \rule[1em]{15em}{0.5pt} \hfill \rule[1em]{20em}{0.5pt} \\
+Ort, Datum \hfill Unterschrift\\}{
+
+%English declaration
+
+\noindent Ich versichere nach § 39 (1) der Einheitlichen Regelungen, meine Arbeit (bei einer
+Gruppenarbeit meinen entsprechend gekennzeichneten Anteil der Arbeit) selbständig
+verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt
+sowie Zitate kenntlich gemacht zu haben. \\
+
+\vspace{1cm}
+\noindent \rule[1em]{15em}{0.5pt} \hfill \rule[1em]{20em}{0.5pt} \\
+Ort, Datum \hfill Unterschrift\\}
+\end{declaration}
+
+\cleardoublepage
+
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT / ZUSAMMENFASSUNG: see Abstracts folder
+%----------------------------------------------------------------------------------------
+
+\begin{otherlanguage}{ngerman}
+\begin{abstract}
+\input{Abstracts/german}
+\end{abstract}
+\end{otherlanguage}
+\begin{otherlanguage}{english}
+\begin{abstract}
+\input{Abstracts/english}
+\end{abstract}
+\end{otherlanguage}
+
+%----------------------------------------------------------------------------------------
+%	DANKSAGUNG
+%----------------------------------------------------------------------------------------
+
+%\begin{acknowledgements}
+%Text\ldots
+%\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	INHALTSVERZEICHNIS/ABBILDUNGSVERZEICHNIS/TABELLENVERZEICHNIS
+%----------------------------------------------------------------------------------------
+
+\tableofcontents % Prints the main table of contents
+
+\listoffigures % Prints the list of figures
+
+\listoftables % Prints the list of tables
+
+\lstlistoflistings % Prints the list of listings
+
+%----------------------------------------------------------------------------------------
+%	ABKÜRZUNGSVERZEICHNIS
+%----------------------------------------------------------------------------------------
+
+\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
+\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+
+\end{abbreviations}
+
+%----------------------------------------------------------------------------------------
+%	PHYSKALISCHE KONSTANTEN
+%----------------------------------------------------------------------------------------
+
+%\begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
+% The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
+%Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
+%Constant Name & $Symbol$ & $Constant Value$ with units\\
+%\end{constants}
+
+%----------------------------------------------------------------------------------------
+%	SYMBOLE
+%----------------------------------------------------------------------------------------
+
+%\begin{symbols}{lll} % Include a list of Symbols (a three column table)
+%$a$ & distance & \si{\meter} \\
+%$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
+%Symbol & Name & Unit \\
+%\addlinespace % Gap to separate the Roman symbols from the Greek
+%$\omega$ & angular frequency & \si{\radian} \\
+%\end{symbols}
+
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+\include{Chapters/Chapter1}
+%\include{Chapters/Chapter2} 
+%\include{Chapters/Chapter3}
+%\include{Chapters/Chapter4} 
+%\include{Chapters/Chapter5} 
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+\include{Appendices/AppendixA}
+%\include{Appendices/AppendixB}
+%\include{Appendices/AppendixC}
+
+%----------------------------------------------------------------------------------------
+%	LITERATUR
+%----------------------------------------------------------------------------------------
+
+\printbibliography[heading=bibintoc]
+
+%----------------------------------------------------------------------------------------
+
+\end{document}  
