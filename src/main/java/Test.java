@@ -45,8 +45,7 @@ public class Test {
 			System.out.println(out.getName()+":="+out.getContent());
 		}
 	}
-	//hier steht ein test
-	
+
 	public boolean containsProc (Collection<Prozess> prozesse, String name) {
 		
 		for(Prozess p: prozesse) {
