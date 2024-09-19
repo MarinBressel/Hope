@@ -29,9 +29,11 @@ public class Test {
 	/**
 	 * @param args
 	 */
-	
+	//endergebniss
 	Collection <Prozess> prozesse = new ArrayList<Prozess>();
+	//alle elemente die schon abgearbeitet wurden
 	Collection <FlowNode> elem = new ArrayList <FlowNode>();
+	//alle prozesse an denen schon gearbeitet wurde
 	Collection <Prozess> workInProgress = new ArrayList <Prozess>();
 	
 	public static void main(String[] args) {
@@ -46,8 +48,9 @@ public class Test {
 		}
 	}
 
+	
+	//Methode um rauszufinden, ob eine Collection einen Prozess mit gewissem Namen hat
 	public boolean containsProc (Collection<Prozess> prozesse, String name) {
-		
 		for(Prozess p: prozesse) {
 			if (p.getName().contains(name)){
 				return true; 
@@ -60,27 +63,34 @@ public class Test {
 	
 	
 	
-	
+	//Mapt die Modelinstance von dem Startevent aus zu ACP. count ist ein Zähler welcher Prozess der letzte war und currproc ist der Aktuelle prozess an dem gearbeitet wird
 	public Collection <Prozess> mapping (BpmnModelInstance modelInstance, FlowNode Startevent,int count,int currproc ) {
 
-		//Das Aktuelle Element mit dem gearbeitet wird. 
+			//Das Aktuelle Element mit dem gearbeitet wird. 
 			FlowNode curr = Startevent;
+			//Startevent wurde schon abgearbeitet
 			elem.add(Startevent);
 			//Neuen Prozess erstellen
 			Prozess p = new Prozess();
+			//Kopie vom count. Hilft bei verhinderung von Doppelungen
 			int countcopy = count;
 			p.setName("P"+currproc);
 			p.setFirst(Startevent);
+			//p ist workInProgress
 			workInProgress.add(p);
 			
 			//currproc=currproc+1;
 			//Bis zu einem Gateway können alle Sachen hinzugefügt werden als Aktivitäten
 			p.setContent(curr.getName());
+			//Gucken ob das Aktuelle element ein Endevent ist, wenn ja. zur endmenge hinzufügen und beenden.
 			if(curr.getClass().toString().contains("EndEvent")) {
 				prozesse.add(p);
 				return prozesse;
 			}
-				while(!curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("Gateway")) {
+			
+				//So lange wie kein Gateway dran kommt, wird der Inhalt vom aktuellen Prozess passend erweitert.
+				while(!curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("Gateway")) {		
+					//wenn das nächste element ein Endevent ist, dann wird das auch einfach hinuzgefügt und es wird beendet.(steht im else block)
 					if(!curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("EndEvent")) {
 						curr=(FlowNode)curr.getOutgoing().iterator().next().getTarget();
 						p.setContent(p.getContent()+"*"+curr.getName());
@@ -93,17 +103,23 @@ public class Test {
 			
 				}
 			
-				//Sobald ein Gateway kommt werden neue Prozesse für jeden ausgehenden Strank erstellt.
-				//Für Exclusive Gateways
+				//Sobald das nöchste Element ein Gateway ist, werden neue Prozesse für jeden ausgehenden Strank erstellt.
+				//Für Exclusive Gateways (gucken ob das nächste ein XOR gateway ist)
 				if(curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("ExclusiveGateway")) {
+					//curr wird zum Gateway gemacht
 					curr=(FlowNode)curr.getOutgoing().iterator().next().getTarget();
+					//prüfen ob es ein aufspaltendes Gateway ist oder ein zusammenführendes anhand der ausgehenden Äste (size>1 heißt aufspaltend)
 					if(curr.getOutgoing().size()>1) {
+						//content um *( erweitern
 						p.setContent(p.getContent()+"*(");
+						//für jeden ausgehenden Ast, wird etwas hinzugefügt. Alles jeweil von einem + getrennt
 						for (SequenceFlow proz : curr.getOutgoing()) {
+							//bei endevents wird nur der Name hinzugefüht. und beendet.
+							//TODO das return statement ist am flaschen ort. Könnte zu früh terminieren.
 							if(proz.getTarget().getClass().toString().contains("EndEvent")) {
 								p.setContent(p.getContent()+proz.getTarget().getName()+")");
 								prozesse.add(p);
-								return prozesse;
+								//return prozesse;
 							}
 							if(!elem.contains((FlowNode)proz.getTarget().getOutgoing().iterator().next().getTarget())) {
 								while(containsProc(workInProgress, "P"+countcopy)) {
