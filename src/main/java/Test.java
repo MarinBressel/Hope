@@ -36,8 +36,7 @@ public class Test {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
-		File file = new File("M:\\Deluoode\\eclipse-workspace\\CamundaTest\\src\\main\\resources\\diagram_6.bpmn");
+		File file = new File("C:\\Users\\Simon Bressel\\Documents\\Marin Bachelorarbeit\\Hope\\src\\main\\resources\\diagram_6.bpmn");
 		Test test = new Test();
 		BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
 		FlowNode Startevent = modelInstance.getModelElementById("Event_1m7yum0");
@@ -46,7 +45,7 @@ public class Test {
 			System.out.println(out.getName()+":="+out.getContent());
 		}
 	}
-	
+	//hier steht ein test
 	
 	public boolean containsProc (Collection<Prozess> prozesse, String name) {
 		
