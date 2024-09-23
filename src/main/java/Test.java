@@ -119,8 +119,9 @@ public class Test {
 							if(proz.getTarget().getClass().toString().contains("EndEvent")) {
 								p.setContent(p.getContent()+proz.getTarget().getName()+")");
 								prozesse.add(p);
-								//return prozesse;
+								return prozesse;
 							}
+							
 							if(!elem.contains((FlowNode)proz.getTarget().getOutgoing().iterator().next().getTarget())) {
 								while(containsProc(workInProgress, "P"+countcopy)) {
 									countcopy++;
@@ -187,7 +188,6 @@ public class Test {
 						for (SequenceFlow proz : curr.getOutgoing()) {
 							if(!elem.contains((FlowNode)proz.getTarget().getOutgoing().iterator().next().getTarget())) {
 								while (containsProc(workInProgress, "P"+countcopy)) {
-									
 									countcopy++;
 								}
 								p.setContent(p.getContent()+"P"+countcopy+"||");

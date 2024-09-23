@@ -1,0 +1,21 @@
+\babel@toc {ngerman}{}\relax 
+\babel@toc {ngerman}{}\relax 
+\babel@toc {ngerman}{}\relax 
+\babel@toc {ngerman}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {ngerman}{}\relax 
+\contentsline {chapter}{Abbildungsverzeichnis}{xi}{chapter*.5}%
+\contentsline {chapter}{Tabellenverzeichnis}{xiii}{chapter*.6}%
+\contentsline {chapter}{Listings}{xv}{chapter*.7}%
+\contentsline {chapter}{Abk\"urzungsverzeichnis}{xvii}{chapter*.8}%
+\contentsline {chapter}{\numberline {1}Einleitung}{1}{chapter.10}%
+\contentsline {section}{\numberline {1.1}Aufbau der Arbeit}{1}{section.11}%
+\contentsline {section}{\numberline {1.2}Ziel der Arbeit}{3}{section.14}%
+\contentsline {chapter}{\numberline {2}Grundlagen}{5}{chapter.15}%
+\contentsline {section}{\numberline {2.1}BPMN}{5}{section.16}%
+\contentsline {subsection}{\numberline {2.1.1}Erste Schritte - Events und Aktivitäten}{5}{subsection.17}%
+\contentsline {subsection}{\numberline {2.1.2}Mögliche Verzweigungen}{7}{subsection.21}%
+\contentsline {section}{\numberline {2.2}Prozessalgebra - ACP}{9}{section.26}%
+\contentsline {section}{\numberline {2.3}Datenbanken}{11}{section.27}%
+\contentsline {chapter}{\numberline {3}Mapping}{13}{chapter.28}%
+\contentsline {section}{\numberline {3.1}Parallelen und Unterschiede}{13}{section.29}%
