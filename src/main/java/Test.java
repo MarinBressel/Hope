@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.camunda.bpm.model.bpmn.Bpmn;
@@ -35,14 +36,18 @@ public class Test {
 	Collection <FlowNode> elem = new ArrayList <FlowNode>();
 	//alle prozesse an denen schon gearbeitet wurde
 	Collection <Prozess> workInProgress = new ArrayList <Prozess>();
+	Collection <FlowNode> gates = new ArrayList <FlowNode>();
+	Stack <Prozess> prozessStack = new Stack<Prozess>();
+	Stack <Prozess> schritt2Prozesse = new Stack<Prozess>();
+	Stack <Integer> schritt2Zähler = new Stack <Integer>();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		File file = new File("C:\\Users\\Simon Bressel\\Documents\\Marin Bachelorarbeit\\Hope\\src\\main\\resources\\diagram_6.bpmn");
+		File file = new File("C:\\Users\\Simon Bressel\\Documents\\Marin Bachelorarbeit\\Hope\\src\\main\\resources\\diagram_7.bpmn");
 		Test test = new Test();
 		BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
-		FlowNode Startevent = modelInstance.getModelElementById("Event_1m7yum0");
-		Collection<Prozess> res = (test.mapping(modelInstance, Startevent, 1, 0));
+		FlowNode Startevent = modelInstance.getModelElementById("StartEvent_1");
+		Collection<Prozess> res = (test.mapping2(modelInstance, Startevent));
 		for(Prozess out : res) {
 			System.out.println(out.getName()+":="+out.getContent());
 		}
@@ -57,6 +62,18 @@ public class Test {
 			}
 		}
 		return false;
+	}
+	
+	
+	
+	
+	public Collection <Prozess> mapping2 (BpmnModelInstance modelInstance, FlowNode Startevent) {
+		mapping(modelInstance, Startevent, 1, 0);
+	while(!schritt2Prozesse.isEmpty()) {
+			Prozess p = schritt2Prozesse.pop();
+			p.setContent(p.getContent()+"*P"+schritt2Zähler.pop());
+		}
+		return prozesse;
 	}
 	
 	
@@ -162,7 +179,6 @@ public class Test {
 						}
 						if(!elem.contains(curr.getOutgoing().iterator().next().getTarget())) {
 							while (containsProc(workInProgress, "P"+countcopy)) {
-								
 								countcopy++;
 							}
 							p.setContent(p.getContent()+"*P"+countcopy);
@@ -182,8 +198,10 @@ public class Test {
 				
 				//Für Parallele Gateways
 				if(curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("ParallelGateway")) {
+					
 					curr=(FlowNode)curr.getOutgoing().iterator().next().getTarget();
 					if(curr.getOutgoing().size()>1) {
+						prozessStack.push(p);
 						p.setContent(p.getContent()+"*(");
 						for (SequenceFlow proz : curr.getOutgoing()) {
 							if(!elem.contains((FlowNode)proz.getTarget().getOutgoing().iterator().next().getTarget())) {
@@ -209,39 +227,76 @@ public class Test {
 								
 								for(Prozess x : workInProgress) {
 									if(x.getFirst()==proz.getTarget().getOutgoing().iterator().next().getTarget()) {
-										p.setContent(p.getContent()+x.getName()+"+");
+										p.setContent(p.getContent()+x.getName()+"||");
 										break;
 									}
 								}
 							}
 						}
-						p.setContent(StringUtils.chop(p.getContent())+")");
+						p.setContent(StringUtils.chop(StringUtils.chop(p.getContent()))+")");
 						
 					}else {
-						while(curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("Gateway")) {
-							if(curr.getOutgoing().iterator().next().getTarget().getOutgoing().size()>1) {
+					
+						
+						
+						while (containsProc(workInProgress, "P"+countcopy)) {
+							countcopy++;
+						}
+						
+						FlowNode curr2 = curr;
+						while(curr2.getOutgoing().iterator().next().getTarget().getClass().toString().contains("Gateway")) {
+							if(curr2.getOutgoing().iterator().next().getTarget().getOutgoing().size()>1) {
 								//TODO
 							}else {
-								curr = curr.getOutgoing().iterator().next().getTarget();
+								curr2 = curr2.getOutgoing().iterator().next().getTarget();
 							}
 						}
-						if(!elem.contains(curr.getOutgoing().iterator().next().getTarget())) {
-							while (containsProc(workInProgress, "P"+countcopy)) {
-								countcopy++;
-							
-							}
-							p.setContent(p.getContent()+"*P"+countcopy);
-							mapping(modelInstance, curr.getOutgoing().iterator().next().getTarget(), count+1, countcopy);
-							count++;
-							countcopy++;
-						}else {
-							for(Prozess x : workInProgress) {
-								if(x.getFirst()==curr.getOutgoing().iterator().next().getTarget()) {
-									p.setContent(p.getContent()+"*"+x.getName());
-									break;
+						
+						if(!elem.contains(curr2.getOutgoing().iterator().next().getTarget())) {
+							if(!gates.contains(curr)) {
+								gates.add(curr);
+								schritt2Prozesse.push(prozessStack.pop());
+								schritt2Zähler.push(countcopy);
+								while(curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("Gateway")) {
+									if(curr.getOutgoing().iterator().next().getTarget().getOutgoing().size()>1) {
+										//TODO
+									}else {
+										curr = curr.getOutgoing().iterator().next().getTarget();
+									}
 								}
-							}
+									mapping(modelInstance, curr.getOutgoing().iterator().next().getTarget(), count+1, countcopy);
+									count++;
+									countcopy++;
+							}	
 						}
+						
+						
+						
+//						while(curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("Gateway")) {
+//							if(curr.getOutgoing().iterator().next().getTarget().getOutgoing().size()>1) {
+//								//TODO
+//							}else {
+//								curr = curr.getOutgoing().iterator().next().getTarget();
+//							}
+//						}
+//						
+//						if(!elem.contains(curr.getOutgoing().iterator().next().getTarget())) {
+//							while (containsProc(workInProgress, "P"+countcopy)) {
+//								countcopy++;
+//							}
+//							p.setContent(p.getContent()+"*P"+countcopy);
+//							
+//								mapping(modelInstance, curr.getOutgoing().iterator().next().getTarget(), count+1, countcopy);
+//								count++;
+//								countcopy++;						
+//						}else {
+//							for(Prozess x : workInProgress) {
+//								if(x.getFirst()==curr.getOutgoing().iterator().next().getTarget()) {
+//									p.setContent(p.getContent()+"*"+x.getName());
+//									break;
+//								}
+//							}
+//						}
 					}	
 				}
 				

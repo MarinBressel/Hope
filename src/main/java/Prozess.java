@@ -4,6 +4,7 @@ public class Prozess {
 	private String name;
 	private String content;
 	private FlowNode first;
+
 	
 	
 	public String getContent() {
@@ -29,6 +30,6 @@ public class Prozess {
 	public void setFirst(FlowNode first) {
 		this.first = first;
 	}
-	
-	
 }
+
+	
