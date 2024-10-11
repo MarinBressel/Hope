@@ -36,7 +36,7 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		File file = new File(
-				"C:\\Users\\Simon Bressel\\Documents\\Marin Bachelorarbeit\\Hope\\src\\main\\resources\\diagram_6.bpmn");
+				"M:\\Parktikum Git\\Hope\\src\\main\\resources\\diagram_6.bpmn");
 		Test test = new Test();
 		BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
 		FlowNode Startevent = modelInstance.getModelElementById("Event_1m7yum0");
