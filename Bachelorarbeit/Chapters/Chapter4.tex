@@ -9,17 +9,17 @@
 %----------------------------------------------------------------------------------------
 Im folgenden Kapitel wollen wir die Implementierung hinter dem Programm erläutern. Dazu soll zunächst die Camunda Model API beschrieben werden und im Anschluss die genaue Implementierung Schritt für Schritt erklärt werden.
 Die Programmierung erfolge in Java und es wurden einige Bibliotheken verwendet. Das Programm liest eine .BPMN-Datei ein und gibt einen passenden String über die Konsole aus. Die ausgabe enthält die Prozesse und Subprozesse, welche das BPMN Diagramm beschreiben sollen.
-\section {.BPMN-Dateien}
+\section {.BPMN-Dateien}\label{.BPMN-Dateien}
 Als eingabe wird ein BPMN Diagramm in form einer Datei eingelsen. Diese Dateien können beispielsweise mit hilfe des Camunda Modeleres erstellt werden. Es gibt allerdings auch viele weitere Tools, welche das Erstellen und Bearbeiten von BPM Diagrammen ermöglichen. Die .BPMN-Datei ähnelt eine .XML Datei. Sie ist aufgebaut wie ein..... Vielleicht lieber in Kapitel 2.1???
-\section{Camunda Model API}
+\section{Camunda Model API}\label{Camunda Model API}
 Der folgende Abschnitt beschriebt zunächst die Camunda Model API. Camunda ist eine Bibliothek welche Funktionen zum Einlesen, Bearbeiten und Erstellen von Prozessen bietet. Für unser Transformationsprogramm müssen keine Prozesse erstellt oder bearbeitet werden, desshalb beschränken wir uns in diesem Abschnitt auf die Funktionen zum Einlesen von Prozessen und zum Extrahieren der in dem Prozess enthaltenen Daten. Ein Prozessdiagramm kann aus einer Datei eingelsen werden. Hierzu wird eine \textit{BPMNModelInstance} erstellt und iniziiert. Das erfolgt durch folgenden Code.\\
 noch einzufügen\\
 Nun besteht die Möglichkeit ein einzelnes Element aus dem Diagramm mittels der ID zu suchen oder eine Collection an Elementen ausgeben zu lassen, welche alle Elemente mit einem bestimmten Typen beinhalten. Hierzu können die Methoden \textit{modelInstance.getModelElementById(ID)} und \textit{modelInstance.getModelElementsByType(Type)} genutzt werden. Die eingehenden und ausgehenden Sequenceflows einzelner Elemente können mit den Mehtoden \textit{getIncomeing} und \textit{getOutgoing} abgerufen werden. Diese Methoden liefern eine Collection von Sequenceflows. Die Collection enthält alle eingehenden bzw. ausgehenden Sequenceflows des jeweiligen Elements.\\
 Die Ziele und Quellen der Sequenceflows werden mit hilfe der Methoden \textit{getTarget} und \textit{getSource} abgefragt.
 Die Camunda Model API beinhaltet noch einige weitere Funktionen, welche aber für unser Programm nicht notwenig sind.\\
-\section{Implementierung}
+\section{Implementierung}\label{Implementierung}
 Nun wollen wir uns den genauen Inhalt des Programmes und dessen funktionsweise anschauen. Das Mapping erfolgt über die Methode finalMapping. Diese ist dazu da um eine Problematik, welche durch Parallele Gateways aufkommt zu beheben. In der Methode finalMapping wird als erstes die Methode \textit{public Collection <Prozess> mapping (BpmnModelInstance modelInstance, FlowNode Startelement,int count,int currproc)} aufgerufen. Diese wollen wir zuerst erläutern.
-\subsection{Generelles}
+\subsection{Generelles}\label{Generelles}
 Wie im Methodenkopf bereits zu erkennen ist, gibt die Methode eine Collection<Prozess> aus. Die beinhaltet eine Menge an Prozessen und Subprozessen in ACP, welche Äquivalent zum BPMN Diagramm ist. Die Klasse Prozess besteht aus den privaten Attributen String Name, String Content und FlowNode First. Diese speichern den Namen und Inhalt des jeweiligen Prozesses und zusätzlich das erste Element, welches in diesem Prozess abgebildet wird. Der erste Prozess speichert also beispielsweise immer das Startevent. Zu jedem Attribut sind getter und setter Methoden gegeben. Als eingabe erhält die Methode zum einen ein BPMN-Diagramm in Form einer modelInstance, das Startevent in Form einer FlowNode und zwei Integer. Count stellt den Prozess mit der Aktuell höchten Nummer dar. Hierbei geht es nicht nur um die Prozesse, welche bereits fertiggestellt worden sind, sondern um den höchsten Subprozess welcher irgendwo in der Menge an Formeln einmal vorgekommen ist. Currproc speichtert hingegen die Nummer des Aktuell zu bearbeitenden Prozesses. \\
 Einige weitere Variabeln werden zusätzlich Global gespeichert. Der genauere Verwendungszweck wird sich erst im laufe des Kapitels zeigen, allerdings wollen wir den Nutzen hier schon einmal kurz beschreiben.\\
 \begin{itemize}
@@ -32,22 +32,22 @@ Einige weitere Variabeln werden zusätzlich Global gespeichert. Der genauere Ver
 \item Stack <Integer> schritt2Zähler = new Stack <Integer>();\\ Dieser Stack dient der Umsetzung des Paralleln Operators.
 \end{itemize}
 Die Methode Main(String[] args) läd ein BPMN Diagramm aus einer Datei, findet das Startevent und ruft die Methode finalMapping auf und übergibt dabei das Diagramm mit Datentyp modelInstance und das Startevent mit Datentyp FlowNode. Diese Methode ruft dann im ersten Schritt die Methode mapping auf. Hier gibt sie das Diagramm und das Startevent weiter. Zusätzlich werden in der Methode die Variabeln count und currproc als 1 und 0 gesetzt. \\
-\subsection{Erste Schritte}
+\subsection{Erste Schritte}\label{Erste Schritte}
 Im folgenden Abschnitt befassen wir uns mit dem Teil der Methode, welcher sich noch nicht mit Gateways auseinander setzt.\\
 Das Programm erstellt eine zu dem Diagramm Äquivalente ACP-Formel, indem es das Diagramm mithilfe der getOutgoing Methode der FlowNodes und der getTarget Methode der Sequenceflows einmal abläuft.\\
 Im ersten Schritt wird eine Variable FLowNode \textit{curr} erstellt und mit dem wert des Startelements initialisiert. \textit{curr} speichtert immer das aktuell zu bearbeitende Element. Zusätzlich wird das übergebene Startelement in die Menge elem eingeführt.\\
 Nun wird ein neuer Prozess \textit{p} erstellt, dessen Name aus einem P und der Variable currproc besteht. Beim ersten Durchlauf der Methode, würde also der erste Prozess erstellt werden und den Namen P0 tragen. Zudem wird der Wert von \textit{first} des Prozesses auf den Wert des Startelements gesetzt. Im Anschluss wird p der Collection workInProgress hinzugefügt.\\
 Nun geht es darum den Inhalt von \textit{p} zu setzen. Dieser soll alle im Diagramm vorkommenden Aktivitäten bis zu einem Gateway in der richtigen Reihenfolge enthalten.
 Zuerst soll das Startelement dem Inhalt hinzugefügt werden. Wenn es sich dabei um ein Endevent handelnt, so wird p der Collection Prozesse hinzugefüht und sie wird im return statement zurückgegeben.\\
-\subsection{Bis zum nächsten Gateway}
+\subsection{Bis zum nächsten Gateway}\label{Bis zum nächsten Gateway}
 Falls nicht, wird nun in einer while-Schleife überprüft, ob es sich bei dem nächsten Element um ein Gateway handelt. Solange das nicht der Fall ist, wird die Schleife betreten.Hierbei und in allen weiteren Fällen ist mit dem nächsten Element jenes gemeint, welches durch curr.getOutgoing().getTarget() erhalten wird. Es ist also das Element welches über einen Sequenceflow mit dem aktuellen Element verbunden ist. Die Methode getOutgoing() liefert eine Collection an Sequenceflows, da es möglich ist, dass mehrere Elemente mit beispielsweise dem selben Gateway verbunden sind. Die Methode wird aber nur an Stellen aufgerufen, an denen nur ein Element auf das aktuelle in \textit{curr} gespeicherte Element folgen kann. Daher können wir mit durch die Methoden iterator().next() auf das jeweilige nächste Element zugreifen.\\
 Innerhalb der Schleife wird nun geprüft, ob es sich bei dem nächsten Element um ein Endevent handelt. Ist das der Fall, so wird der Name des Events zusammen mit dem *-Operator dem Inhalt von p hinzugefügt. Dann wird p der Ergebnissmenge Prozesse hinzugefügt und die Collection wird zurückgegeben. Damit Terminiert die Methode\\
 Andernfalls, wird die Variable curr mit dem Wert der nächsten Flownode geladen. Der Name dieses Elements wird dem Inhalt von p hinzugefügt. Auch hier wird der *-Operator vor den Namen geschrieben. Diese while-Schleife wird ausgefüht, bis sie entweder durch ein Endevent Terminiert oder das nächste vorkommende Element ein beliebiges Gateway ist.
-\subsection{Exclusive Gateways}
+\subsection{Exclusive Gateways}\label{Exclusive Gateways}
 Da wir zwischen Exclusiven und Parallelen Gateways unterscheiden, müssen wir auch in der Implementierung des Mappings beide fällte getrennt abarbeiten. Als erstes wird also der Typ des Gateways abgefragt. In diesem Abschnitt erläutern wir den Teil des Programmes, welches sich mit der Bearbeitung des Exclusiven Gateways beschäftigt.\\
 Da in der vorherigen Schleife nur das nächste Element überprüft wurde, wird zuerst \textit{curr} mit dem Wert des nächsten Elementes geladen. Hierbei handelt es sich also um das zu bearbeitende Gateway.\\
 Nun müssen wir zwischen aufspaltenden und zusammenführenden Gateways unterscheiden. Dazu wird die größe der Collection abgefragt, welche durch curr.getOutgoing() gegeben wird.
-\subsubsection{Aufspaltende Exclusive Gateways}
+\subsubsection{Aufspaltende Exclusive Gateways}\label{Aufspaltende Exclusive Gateways}
 Befinden wir uns an einem Anfspaltenden Gateway, so muss curr.getOutgoing().size() einen Wert, welcher größer als 1 ist zurück geben.\\
 Ist das der Fall, so können wir dem Inhalt von p auf jeden Fall die Zeichenkette \textit{*(} hinzufügen. Innerhalb dieser Klammer, soll nun der jeweils passende Subprozess für jeden ausgehenden Sequenceflow stehen. Diese Prozesse werden mit dem +-Operator von einander getrennt, da es sich um eine XOR aufspalung handelt.\\
 Dies wird durch einen For-Loop realisiert welche über jeden ausgehenden Sequenceflow des Gateways Iteriert. Die Sequenceflows sind durch den for-Loop mit \textit{proz} benannt.\\
@@ -62,22 +62,22 @@ Nun wird der Inhalt von \textit{p} um den String \textit{"P"+countcopy+"+"} erwe
 Nun folgt ein rekursiver Aufruf der Methode mapping. Als Parameter wird wieder die selbe modelInstance übergeben. Das Startelement ist jetzt das Ziel des jeweiligen Seqenceflows und der Wert des \textit{currproc} muss den der countcopy annehmen. Das Programm definiert nun also den Subprozess für den jeweiligen Ast des Diagrammes.\\
 Im letzten Schritt müssen noch 2 kleine Änderungen an dem Inhalt des Prozesses \textit{t} gemacht werden. Zum einen wird das letzte Zeichen gelöscht, da aktuell ein \textit{+} zu viel an Ende des Strings hängt. Als letztes wird dann die Klammer geschlossen.\\
 Damit ist ein Prozess fertig defniert, für den Fall, dass er auf auf ein aufspaltendes exclusives Gateway trifft.
-\subsubsection{Zusammenführende Exclusive Gateways}
+\subsubsection{Zusammenführende Exclusive Gateways}\label{Zusammenführende Exclusive Gateways}
 Falls das Programm auf ein zusammenführendes Gateway trifft, verhält es sich ähnlich zu dem aufspaltenden. Zunächst werden wieder alle folgenden zusammenf+hrenden Gateways ignoriert. Im Anschluss wird wie zuvor geprüft, ob das folgende Element bereits bearbeitet wurde.\\
 Auch hier werden beide Fälle wie im Abschnitt zuvor behandelt. 
-\subsection {Parallele Gateways}
+\subsection {Parallele Gateways}\label{Parallele Gateways}
 Für parallele Gateways können einige techniken ähnlich wie im Abschnitt 4.3.4 genutzt werden. Es gibt allerdings einige weitere Merkmale die beachtet werden müssen. Dieser Abschnitt soll die verwendeten Techniken genauer erklären.\\
-\subsubsection{Generelle Idee}
+\subsubsection{Generelle Idee}\label{Generelle Idee}
 Wie in Kapitel 3 erläutert muss bei dem Parallelen Operator im ACP muss darauf geachtet werden, dass nicht mehrere der erstellten Subprozesse die folgenden Aktivitäten ausführen. Zusätzlich muss der bereich zwischen einem zusammenführenden und dem dazugehörigen aufspaltenden Gateway immer geschlossen sein. Das erlaubt uns den Subprozess, welcher nach dem zufammenführenden Gateway beginnt, bereits im aufspaltenden Prozess aufzurufen.\\
 Um das umzusetzen wird die Methode \textit{finalMapping} verwendet, welche in einem zweiten Schritt aufgerufen wird. Sie arbeitet mit 3 Stacks, welche in der Methode \textit{mapping} gefüllt werden sollen.\\
-\subsubsection{Aufspaltende Parallele Gateways}
+\subsubsection{Aufspaltende Parallele Gateways}\label{Aufspaltende Parallele Gateways}
 Die aufspaltenden parallelen Gateways verhalten sich sehr ähnlich zu den exclusiven Gateways. Zu beginn wird der Prozess \textit{p} auf den Stack \textit{prozessStack} gelegt. Dadurch wird der Prozess gespeichert, welcher später um den, auf dem zusammenführenden Gateway folgenden Prozess ergänzt werden soll.\\
 Im Anschluss verhält sich das Programm genau so wie auch für die aufspaltenden exclusiven Gateways. Allerdings werden die einzelnen Prozesse oder Aktivitäten nicht durch \textit{+}, sondern durch \textit{||} getrennt.
-\subsubsection{Zusammenführende Parallele Gateways}
+\subsubsection{Zusammenführende Parallele Gateways}\label{Zusammenführende Parallele Gateways}
 Trifft das Programm nun auf ein zusammenführendes paralleles Gateway, so soll der Inhalt des aktuellen Prozesses \textit{p} nicht mehr verändert werden. Hier muss jetzt festgestellt werden, welcher Prozess das aufspaltende Gateway enthält und welcher Prozess auf das zusammenführende Gateway folgt. Dazu wird der Wert der \textit{countcopy}, welcher genauso wir im zuvorigen Abschnitt bestimmt wird, auf einen Stack \textit{schritt2Zähler} gelegt. Zusätzlich wird der oberste Prozess aus dem \textit{prozesseStack} auf einen weiteren Stack \textit{schritt2Prozesse} gelegt. Damit ist sichergestellt, dass in beiden Stack, welche mit \textit{schritt2} gekennzeichnet sind, stehts auf der selben höhe die zusammenhängenden Daten gespeichert werden. Das bedeutet einer Ebene der Stacks liegen immer in einem Stack der Prozess, welcher erweitert werden muss und im anderen Stack die Nummer der Prozesses mit dem er erweitert werden soll.\\
 Im Anschluss wird nun wieder die Methode mapping aufgerufen. Auch hier wird die countcopy wieder als currproc übergeben, damit der rekursive aufruf die bennenung bei der richtigen Zahl anfängt. Außerdem wird das nächste Element was auf das Gateway folgt als Startelement übergeben.\\
 In zusammenführende Gateways treffen immer mehrere Sequenceflows ein. Das bedeutet, dass auch die obige Aktion mehrfach ausgeführt wird. Um das zu verhindern, wird vorher geprüft, ob das zusammenführende Gateway in der Collection \textit{gates} enthalten ist. Nur wenn das nicht der Fall ist, wird die Aktion ausgeführt. Zudem muss das jeweilige Gateway in \textit{gates} gesspeichert werden, um es als abgearbeitet zu markieren.
-\subsection{Ausgabe und Beobachtung}
+\subsection{Ausgabe und Beobachtung}\label{Ausgabe und Beobachtung}
 Nun ist der Prozess\textit{p} korrekt abgearbeitet und ausgeschrieben. Er wird der Collection \textit{prozesse} hinzugefügt und diese Collection wird zurückgegeben. Auf Grund der Rekursion ist zu sehen, dass die Nummerierung der Prozesse teilweise willkürlich erscheint. Das Programm startet die Bearbeitung bei P0, allerdings ist der erste fertiggestellte Prozess, welcher der Ergebnissmenge hinzugefügt wird, derjenige, welcher das Endevent beinhaltet.
 
 
