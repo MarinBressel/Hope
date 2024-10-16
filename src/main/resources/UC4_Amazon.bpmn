@@ -54,11 +54,10 @@
     </bpmn:task>
     <bpmn:sequenceFlow id="Flow_0f2598m" sourceRef="Gateway_0kcpqqg" targetRef="Activity_1q8t8bi" />
     <bpmn:exclusiveGateway id="Gateway_0haz3kz">
-      <bpmn:incoming>Flow_1uz0nvy</bpmn:incoming>
       <bpmn:incoming>Flow_16r7i2n</bpmn:incoming>
+      <bpmn:incoming>Flow_1uz0nvy</bpmn:incoming>
       <bpmn:outgoing>Flow_100ohm2</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1uz0nvy" sourceRef="Activity_1q8t8bi" targetRef="Gateway_0haz3kz" />
     <bpmn:sequenceFlow id="Flow_16r7i2n" sourceRef="Activity_0oyu91c" targetRef="Gateway_0haz3kz" />
     <bpmn:task id="Activity_09jkaug" name="Zahlung durchführen">
       <bpmn:incoming>Flow_100ohm2</bpmn:incoming>
@@ -120,6 +119,7 @@
     </bpmn:task>
     <bpmn:sequenceFlow id="Flow_0w3wbyn" sourceRef="Gateway_16n2g74" targetRef="Activity_1lhoqqi" />
     <bpmn:sequenceFlow id="Flow_17fn589" sourceRef="Activity_1lhoqqi" targetRef="Gateway_08o9lfn" />
+    <bpmn:sequenceFlow id="Flow_1uz0nvy" sourceRef="Activity_1q8t8bi" targetRef="Gateway_0haz3kz" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_068fz0c">
@@ -204,9 +204,9 @@
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1sj0ii0_di" bpmnElement="Event_1sj0ii0">
-        <dc:Bounds x="1802" y="462" width="36" height="36" />
+        <dc:Bounds x="1772" y="462" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1791" y="505" width="59" height="27" />
+          <dc:Bounds x="1761" y="505" width="59" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1air0ai_di" bpmnElement="Flow_1air0ai">
@@ -309,7 +309,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1c08o83_di" bpmnElement="Flow_1c08o83">
         <di:waypoint x="1715" y="480" />
-        <di:waypoint x="1802" y="480" />
+        <di:waypoint x="1772" y="480" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w3wbyn_di" bpmnElement="Flow_0w3wbyn">
         <di:waypoint x="1690" y="262" />
