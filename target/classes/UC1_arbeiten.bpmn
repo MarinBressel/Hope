@@ -18,41 +18,77 @@
       <bpmn:incoming>Flow_12gwdkf</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_12gwdkf" sourceRef="Activity_0plampl" targetRef="Event_1ha1edc" />
+    <bpmn:textAnnotation id="TextAnnotation_02x2tyf">
+      <bpmn:text>Wenn aufgaben vorliegen, als "in arbeit Markieren"</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1f4at6j" associationDirection="None" sourceRef="Activity_1utmrzs" targetRef="TextAnnotation_02x2tyf" />
+    <bpmn:textAnnotation id="TextAnnotation_0a9cuhw">
+      <bpmn:text>Aufgaben als "Abgearbeitet" markieren</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1plyi1k" associationDirection="None" sourceRef="Activity_0plampl" targetRef="TextAnnotation_0a9cuhw" />
+    <bpmn:textAnnotation id="TextAnnotation_0u49re5">
+      <bpmn:text>DatenBank erstellen. Inhalt ist eine Tabelle "Aufgaben" mit Wert "Status"</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0clrp5s" associationDirection="None" sourceRef="StartEvent_1" targetRef="TextAnnotation_0u49re5" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0pdum4f">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <dc:Bounds x="232" y="292" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="156" y="145" width="89" height="27" />
+          <dc:Bounds x="206" y="335" width="89" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1utmrzs_di" bpmnElement="Activity_1utmrzs">
-        <dc:Bounds x="270" y="80" width="100" height="80" />
+        <dc:Bounds x="320" y="270" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0plampl_di" bpmnElement="Activity_0plampl">
-        <dc:Bounds x="430" y="80" width="100" height="80" />
+        <dc:Bounds x="480" y="270" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1ha1edc_di" bpmnElement="Event_1ha1edc">
-        <dc:Bounds x="592" y="102" width="36" height="36" />
+        <dc:Bounds x="642" y="292" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="583" y="145" width="54" height="14" />
+          <dc:Bounds x="633" y="335" width="54" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1f4at6j_di" bpmnElement="Association_1f4at6j">
+        <di:waypoint x="376" y="270" />
+        <di:waypoint x="389" y="194" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1plyi1k_di" bpmnElement="Association_1plyi1k">
+        <di:waypoint x="547" y="270" />
+        <di:waypoint x="603" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0clrp5s_di" bpmnElement="Association_0clrp5s">
+        <di:waypoint x="246" y="327" />
+        <di:waypoint x="214" y="460" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12b2l3h_di" bpmnElement="Flow_12b2l3h">
-        <di:waypoint x="218" y="120" />
-        <di:waypoint x="270" y="120" />
+        <di:waypoint x="268" y="310" />
+        <di:waypoint x="320" y="310" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16jcv9y_di" bpmnElement="Flow_16jcv9y">
-        <di:waypoint x="370" y="120" />
-        <di:waypoint x="430" y="120" />
+        <di:waypoint x="420" y="310" />
+        <di:waypoint x="480" y="310" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12gwdkf_di" bpmnElement="Flow_12gwdkf">
-        <di:waypoint x="530" y="120" />
-        <di:waypoint x="592" y="120" />
+        <di:waypoint x="580" y="310" />
+        <di:waypoint x="642" y="310" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_02x2tyf_di" bpmnElement="TextAnnotation_02x2tyf">
+        <dc:Bounds x="350" y="110" width="100" height="84" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0a9cuhw_di" bpmnElement="TextAnnotation_0a9cuhw">
+        <dc:Bounds x="570" y="80" width="100" height="55" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0u49re5_di" bpmnElement="TextAnnotation_0u49re5">
+        <dc:Bounds x="160" y="460" width="100" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

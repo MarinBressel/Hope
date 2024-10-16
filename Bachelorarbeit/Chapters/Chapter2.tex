@@ -60,6 +60,7 @@ Um unser bislang erarbeitetes Beispiel etwas realitätsnaher zu gestalten, wolle
 \caption[Paralell-Gateway]{Parallele Ausführung - Das Paralell-Gateway}
 \label{parallel}
 \end{figure}
+\subsection{Kommentare}
 \subsection{Subprozesse und weitere Elemente}\label{Subprozesse und weitere Elemente}
 Der letzte Block, welcher von uns genauer betrachtet wird ist der \textit{subprocess-Block}. Auch dieser wird bereits durch den Namen gut beschrieben. Zur vereinfachten Darstellung, kann ein Teil von einem Prozess als ein unterprozess zusammengefasst werden. In Abbildung \ref{subprozess} ist also der selbe Prozess dargestellt wie der in Abbildung 2.5. Hier wurde der Teil des Prozesses, in dem ein Nutzer registriert wird zu einem Subprocess zusammengefasst. In Abbildung \ref{alleElem} findet sich zudem eine Alternative Darstellung dieses Blockes. Hier ist zu sehen, dass der Subprozess auch als einzelnes Elemt auftauchen kann. An der Stelle wird dann eine referenz zu einem Prozess gemacht. Dieser enthält die Elemente die von dem Subprocess ausgeführt werden. In dieser Abbildung ist zustätzlich noch eine Übersicht über alle für uns relevante Elemente zu finden.\\
 \begin{figure}
@@ -68,7 +69,8 @@ Der letzte Block, welcher von uns genauer betrachtet wird ist der \textit{subpro
 \decoRule
 \caption[Subprocess Block]{Subprocess Block - Prozesse innerhalb von Prozessen}
 \label{subprozess}
-\end{figure}Zuletzt möchten wir nun jene Elemente beschreieben, die für unsere Arbeit nicht wichtig werden. Hierbei handelt es sich zum großteil um Varianten der uns bekannten Bausteine. Neben den Exclusive und Parallel Gateways existieren noch sogenannte \textit{Event-based Gateways}. Diese entscheiden anhand eines eintreffenden Events, wleche Aktion ausgefürt wird. 
+\end{figure}Ein weiteres Element sind die Kommentare. BPMN bietet die Möglichkeit alle Elemente mit Kommentaren zu versehen. Auch hierfür ist ein Beispiel in Abbildung \ref{alleElem} zu finden. Das Kommentar wird durch eine gestrichelte Line mit dem zugehörigen Objekt verbunden. In der Abbildung bezieht sich das Kommentar also auf den Subprozess. Kommentare nehmen keinen Einfluss auf den Verlauf des Diagrammes.\\
+Zuletzt möchten wir nun jene Elemente beschreieben, die für unsere Arbeit nicht wichtig werden. Hierbei handelt es sich zum großteil um Varianten der uns bekannten Bausteine. Neben den Exclusive und Parallel Gateways existieren noch sogenannte \textit{Event-based Gateways}. Diese entscheiden anhand eines eintreffenden Events, wleche Aktion ausgefürt wird. 
 Die Task blocks lassen sich durch Symbole in der oberen linken Ecke genauer spezifizieren. Hier wird unterschieden zwischen \textit{User task, Service task, Business rule task} und \textit{Script task}. Auch unter den Events kann genauer spezifiziert werden. Für alle \textit{catching events} sind \textit{throwing events} vorhanden und auch unter diesen gibt es unterschieldiche Typen wie \textit{Message Evens} oder \textit{timer Events}. Zudem gibt es eine Möglichkeit Datenflüsse darzustellen durch eine sogenannte \textit{Date object reference} oder eine \textit{Data store reference}. Zuletzt bietet BPMN eine möglichkeit verschiedene Teilnehmer einer Prozesses darzustellen. Sogenannte \textit{pools} und \textit{lanes} können genutzt werden um Gruppen und auch einzenle Teilnehmer innerhalb dieser Gruppen darzustellen.\\
 \begin{figure}
 \centering
@@ -128,9 +130,10 @@ Wir wollen nun die Semantik dahinter erläutern.
 \item Für ${\phi}$ ::= $u_1$ = $u_2$  besteht die Query, wenn ${\sigma}$($u_1$)=${\sigma}$($u_2$)
 \item Für ${\phi}$::= $\exists$u.Q besteht die Query, wenn in der aktuellen Instanz der Datenbank ein Element existiret, welches durch eine Substitution  ${\sigma}$' auf u abgebildet werden kann. 
 \end{itemize}
-Die Manipulation einer Datenbank besteht aus drei Phasen. Zunächst muss ein eine Query, welche wir als Guard bezeichnen bestehen. Im Anschluss kann die Aktion ausgeführt werden. Die Aktion besteht aus dem löschen eines Elements und dem Hinzufügen eines Elements. Ein Element beschreibt dabei ein Tupel in der Menge $\mathcal{I}$ Hier ist anzumerken, dass es keine Möglichkeit gibt Inhalte der Datenbank zu ändern. Möchte also ein Nutzer sein Passwort ändern, so wird zuerst in einem Schritt der jeweilige Nutzer entfernt und im nächsten Schritt ein neuer Nutzer mit dem veränderten Passwort der Datenbank hinzugefügt.
-
-
+Die Manipulation einer Datenbank erfolgt nun über eine sogenannte \textit{Aktion}. Diese besteht aus einem Guard \textit{g} und einem Effekt welcher an der aktuellen Instanz der Datenbank ausgeführt werden soll. Der Effekt hingegen besteht aus zwei endlichen Mengen. DEL und ADD. DEL enthält sämtliche Elemente, die aus der Datenbank gelöscht werden sollen und ADD enhält jene, welcher der Datenbank hinzugefügt werden sollen. Bei einem Tripel \textit{act=(g,DEL,ADD)} muss also zunächst der Guard bestehen. Im Anschluss werden alle Elemente der Datenbank, welche in DEL enthalten sind aus der Datenbank entfernt und zuletzt werden alle Elemente aus ADD der Datenbank hinzugefüht. Um ein bestimmtes Element zu verändern muss dieses also zunächst gelöscht werden und erst dann, in veränderter Form, der Datenbank wieder hinzugefügt werden. Die Mengen DEL und ADD können selbstversändlich auch leer sein.
+\subsection{Verbindung zur Datenbank}
+Im nun folgenden Abschnitt wollen wir genauer betrachen wie die Verbindung zwischen der Prozessalgebra und einer Relationalen Datenbank aufgebaut ist.\\
+Jeder Prozess beinhaltet zu gleich auch eine Datenbank. Außerdem wird jede Aktion aus der Prozessalbgebra um eine Aktion, welche zur Manipulation von Datenbanken genutzt wird, ergänzt. Jede Aktion besteht also aus einer Aktion von ACP, einen guard, einer Menge DEL und einer Menge ADD. Beim ausführen einer Aktion aus der Formel wird also gleichzeitig die zugehörige Datenbank manipuliert.  
 
 
 
