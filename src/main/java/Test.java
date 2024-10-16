@@ -1,4 +1,5 @@
 import java.io.File;
+import java.nio.channels.spi.AbstractSelectableChannel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
@@ -6,8 +7,12 @@ import java.util.Stack;
 import org.apache.commons.lang3.StringUtils;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.impl.instance.AssociationImpl;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
+import org.camunda.bpm.model.xml.instance.ModelElementInstance;
+
+import jdk.internal.org.jline.utils.ShutdownHooks.Task;
 
 /**
  * 
@@ -34,12 +39,15 @@ public class Test {
 	Stack<Integer> schritt2Zähler = new Stack<Integer>();
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		File file = new File(
-				"M:\\Parktikum Git\\Hope\\src\\main\\resources\\diagram_6.bpmn");
+		// TODO Auto-generated method stub		
+		
+		File file = new File("M:\\Parktikum Git\\Hope\\src\\main\\resources\\UC4_Amazon.bpmn");
+		File file1 = new File ("M:\\Parktikum Git\\Hope\\src\\main\\resources\\forTypes.bpmn");
 		Test test = new Test();
 		BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
-		FlowNode Startevent = modelInstance.getModelElementById("Event_1m7yum0");
+		BpmnModelInstance modelInstance1 = Bpmn.readModelFromFile(file1);
+		Collection<ModelElementInstance> assos = modelInstance.getModelElementsByType(modelInstance1.getModelElementById("Association_0iy4pom").getElementType());
+		FlowNode Startevent = modelInstance.getModelElementById("StartEvent_1");
 		Collection<Prozess> res = (test.finalMapping(modelInstance, Startevent));
 		for (Prozess out : res) {
 			System.out.println(out.getName() + ":=" + out.getContent());
@@ -70,7 +78,6 @@ public class Test {
 	// welcher Prozess der letzte war und currproc ist der Aktuelle prozess an dem
 	// gearbeitet wird
 	public Collection<Prozess> mapping(BpmnModelInstance modelInstance, FlowNode Startevent, int count, int currproc) {
-
 		// Das Aktuelle Element mit dem gearbeitet wird.
 		FlowNode curr = Startevent;
 		// Startevent wurde schon abgearbeitet
@@ -81,16 +88,17 @@ public class Test {
 		int countcopy = count;
 		p.setName("P" + currproc);
 		p.setFirst(Startevent);
+		p.acts.add(Startevent);
 		// p ist workInProgress
-		workInProgress.add(p);
-
 		// currproc=currproc+1;
 		// Bis zu einem Gateway können alle Sachen hinzugefügt werden als Aktivitäten
 		p.setContent(curr.getName());
+		workInProgress.add(p);
 		// Gucken ob das Aktuelle element ein Endevent ist, wenn ja. zur endmenge
 		// hinzufügen und beenden.
 		if (curr.getClass().toString().contains("EndEvent")) {
 			prozesse.add(p);
+			workInProgress.add(p);
 			return prozesse;
 		}
 
@@ -103,9 +111,10 @@ public class Test {
 			if (!curr.getOutgoing().iterator().next().getTarget().getClass().toString().contains("EndEvent")) {
 				curr = (FlowNode) curr.getOutgoing().iterator().next().getTarget();
 				p.setContent(p.getContent() + "*" + curr.getName());
-
+				p.acts.add(curr);
 			} else {
 				p.setContent(p.getContent() + "*" + curr.getOutgoing().iterator().next().getTarget().getName());
+				p.acts.add(curr.getOutgoing().iterator().next().getTarget());
 				prozesse.add(p);
 				return prozesse;
 			}
@@ -129,6 +138,7 @@ public class Test {
 					// bei endevents wird nur der Name hinzugefüht. und beendet.
 					if (proz.getTarget().getClass().toString().contains("EndEvent")) {
 						p.setContent(p.getContent() + proz.getTarget().getName() + "+");
+						p.acts.add(proz.getTarget());
 					} else {
 
 						if (!elem.contains((FlowNode) proz.getTarget().getOutgoing().iterator().next().getTarget())) {

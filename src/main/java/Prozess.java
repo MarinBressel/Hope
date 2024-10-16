@@ -1,11 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 
 public class Prozess {
 	private String name;
 	private String content;
 	private FlowNode first;
-
-	
+	public List<FlowNode> acts = new ArrayList<FlowNode>();
 	
 	public String getContent() {
 		return content;
